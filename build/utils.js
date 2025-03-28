@@ -9,7 +9,8 @@
 export function formatFlags(flags) {
     if (!flags)
         return '';
-    return Object.entries(flags).map(([key, value]) => {
+    return Object.entries(flags)
+        .map(([key, value]) => {
         // Skip undefined/null values
         if (value === undefined || value === null)
             return '';
@@ -19,7 +20,7 @@ export function formatFlags(flags) {
         }
         // Handle arrays (space-separated multi-values)
         if (Array.isArray(value)) {
-            return value.map(v => `--${key}=${escapeValue(v)}`).join(' ');
+            return value.map((v) => `--${key}=${escapeValue(v)}`).join(' ');
         }
         // Handle objects (JSON stringify)
         if (typeof value === 'object') {
@@ -27,7 +28,9 @@ export function formatFlags(flags) {
         }
         // Regular values
         return `--${key}=${escapeValue(value)}`;
-    }).filter(Boolean).join(' ');
+    })
+        .filter(Boolean)
+        .join(' ');
 }
 /**
  * Escapes values for command line usage
@@ -62,8 +65,7 @@ export function parseHelpText(helpText) {
     }
     // Look for a description section if the first section wasn't clear
     if (description[0]?.length < 10 || description[0]?.toUpperCase().includes('USAGE')) {
-        const descSection = sections.find(section => section.toUpperCase().startsWith('DESCRIPTION') ||
-            section.toUpperCase().includes('\nDESCRIPTION\n'));
+        const descSection = sections.find((section) => section.toUpperCase().startsWith('DESCRIPTION') || section.toUpperCase().includes('\nDESCRIPTION\n'));
         if (descSection) {
             const descContent = descSection.replace(/DESCRIPTION/i, '').trim();
             if (descContent) {
@@ -72,34 +74,25 @@ export function parseHelpText(helpText) {
         }
     }
     // Look for examples section with improved pattern matching
-    const examplePatterns = [
-        /EXAMPLES?/i,
-        /USAGE/i
-    ];
+    const examplePatterns = [/EXAMPLES?/i, /USAGE/i];
     for (const pattern of examplePatterns) {
-        const exampleSection = sections.find(section => pattern.test(section));
+        const exampleSection = sections.find((section) => pattern.test(section));
         if (exampleSection) {
             // Extract examples - look for command lines that start with $ or sf
-            const exampleLines = exampleSection.split('\n')
-                .filter(line => {
+            const exampleLines = exampleSection
+                .split('\n')
+                .filter((line) => {
                 const trimmed = line.trim();
-                return trimmed.startsWith('$') ||
-                    trimmed.startsWith('sf ') ||
-                    /^\s*\d+\.\s+sf\s+/.test(line); // Numbered examples: "1. sf ..."
+                return trimmed.startsWith('$') || trimmed.startsWith('sf ') || /^\s*\d+\.\s+sf\s+/.test(line); // Numbered examples: "1. sf ..."
             })
-                .map(line => line.trim().replace(/^\d+\.\s+/, '')); // Remove numbering if present
+                .map((line) => line.trim().replace(/^\d+\.\s+/, '')); // Remove numbering if present
             examples.push(...exampleLines);
         }
     }
     // Look for flags section with improved pattern matching
-    const flagPatterns = [
-        /FLAGS/i,
-        /OPTIONS/i,
-        /PARAMETERS/i,
-        /ARGUMENTS/i
-    ];
+    const flagPatterns = [/FLAGS/i, /OPTIONS/i, /PARAMETERS/i, /ARGUMENTS/i];
     for (const pattern of flagPatterns) {
-        const flagSections = sections.filter(section => pattern.test(section));
+        const flagSections = sections.filter((section) => pattern.test(section));
         for (const flagSection of flagSections) {
             // Skip the section header line
             const sectionLines = flagSection.split('\n').slice(1);
@@ -110,7 +103,7 @@ export function parseHelpText(helpText) {
                 // Pattern 2: Indented flag with details (common in newer SF CLI)
                 /^\s+(?:-([a-zA-Z]),\s+)?--([a-zA-Z][a-zA-Z0-9-]+)(?:\s+|\=)(?:<([a-zA-Z0-9_\-\[\]|]+)>)?\s*\n\s+(.+)/,
                 // Pattern 3: Simple flag with no/minimal formatting
-                /^\s*(?:-([a-zA-Z]),\s*)?--([a-zA-Z][a-zA-Z0-9-]+)(?:\s+|\=)?(?:\s*<([a-zA-Z0-9_\-\[\]|]+)>)?\s+(.+)$/
+                /^\s*(?:-([a-zA-Z]),\s*)?--([a-zA-Z][a-zA-Z0-9-]+)(?:\s+|\=)?(?:\s*<([a-zA-Z0-9_\-\[\]|]+)>)?\s+(.+)$/,
             ];
             // Process the flag section
             let i = 0;
@@ -121,7 +114,7 @@ export function parseHelpText(helpText) {
                 let matched = false;
                 // Try all patterns
                 for (const pattern of flagPatterns) {
-                    const match = (line.match(pattern) || combinedLines.match(pattern));
+                    const match = line.match(pattern) || combinedLines.match(pattern);
                     if (match) {
                         matched = true;
                         const char = match[1];
@@ -153,9 +146,11 @@ export function parseHelpText(helpText) {
                         flags[name] = {
                             name,
                             char,
-                            description: description.replace(/\([Rr]equired\)|\[[Rr]equired\]|[Rr]equired:?/g, '').trim(),
+                            description: description
+                                .replace(/\([Rr]equired\)|\[[Rr]equired\]|[Rr]equired:?/g, '')
+                                .trim(),
                             required,
-                            type: normalizedType
+                            type: normalizedType,
                         };
                         // Skip the next line if we matched against a two-line pattern
                         if (combinedLines.match(pattern) && !line.match(pattern)) {
@@ -175,6 +170,6 @@ export function parseHelpText(helpText) {
     return {
         description: description.join('\n\n'),
         examples,
-        flags
+        flags,
     };
 }

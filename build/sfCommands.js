@@ -1,9 +1,9 @@
-import { execSync } from "child_process";
-import { z } from "zod";
-import { formatFlags } from "./utils.js";
-import fs from "fs";
-import path from "path";
-import os from "os";
+import { execSync } from 'child_process';
+import { z } from 'zod';
+import { formatFlags } from './utils.js';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 /**
  * List of topics to ignore during command discovery
  */
@@ -30,7 +30,7 @@ export function clearCommandCache() {
         }
     }
     catch (error) {
-        console.error("Error clearing command cache:", error);
+        console.error('Error clearing command cache:', error);
         return false;
     }
 }
@@ -44,17 +44,17 @@ export function refreshCommandCache() {
             fs.unlinkSync(CACHE_FILE);
         }
         // Create a fresh cache
-        console.error("Refreshing SF command cache...");
+        console.error('Refreshing SF command cache...');
         // Get all commands directly from sf commands --json
         const commands = getAllSfCommands();
         console.error(`Found ${commands.length} total commands for cache refresh`);
         // Save the cache
         saveCommandCache(commands);
-        console.error("Cache refresh complete!");
+        console.error('Cache refresh complete!');
         return true;
     }
     catch (error) {
-        console.error("Error refreshing command cache:", error);
+        console.error('Error refreshing command cache:', error);
         return false;
     }
 }
@@ -69,11 +69,13 @@ const SF_BINARY_PATH = (() => {
             '/opt/homebrew/bin/sf',
             process.env.HOME + '/.npm/bin/sf',
             process.env.HOME + '/bin/sf',
-            process.env.HOME + '/.nvm/versions/node/*/bin/sf'
+            process.env.HOME + '/.nvm/versions/node/*/bin/sf',
         ];
         for (const path of possiblePaths) {
             try {
-                if (execSync(`[ -x "${path}" ] && echo "exists"`, { encoding: 'utf8' }).trim() === 'exists') {
+                if (execSync(`[ -x "${path}" ] && echo "exists"`, {
+                    encoding: 'utf8',
+                }).trim() === 'exists') {
                     return path;
                 }
             }
@@ -102,8 +104,8 @@ export function executeSfCommand(command) {
             maxBuffer: 10 * 1024 * 1024,
             env: {
                 ...process.env,
-                PATH: process.env.PATH
-            }
+                PATH: process.env.PATH,
+            },
         });
     }
     catch (error) {
@@ -120,11 +122,11 @@ function getAllSfCommands() {
     try {
         console.error("Fetching all SF CLI commands via 'sf commands --json'...");
         // Execute the command to get all commands in JSON format
-        const commandsJson = executeSfCommand("commands --json");
+        const commandsJson = executeSfCommand('commands --json');
         const allCommands = JSON.parse(commandsJson);
         console.error(`Found ${allCommands.length} total commands from 'sf commands --json'`);
         // Filter out commands from ignored topics
-        const filteredCommands = allCommands.filter(cmd => {
+        const filteredCommands = allCommands.filter((cmd) => {
             if (!cmd.id)
                 return false;
             // For commands with colons (topic:command format), check if the topic should be ignored
@@ -137,7 +139,7 @@ function getAllSfCommands() {
         });
         console.error(`After filtering ignored topics, ${filteredCommands.length} commands remain`);
         // Transform JSON commands to SfCommand format
-        const sfCommands = filteredCommands.map(jsonCmd => {
+        const sfCommands = filteredCommands.map((jsonCmd) => {
             // Parse the command structure from its ID
             const commandParts = jsonCmd.id.split(':');
             const isTopicCommand = commandParts.length > 1;
@@ -155,7 +157,7 @@ function getAllSfCommands() {
                     required: !!flagDetails.required,
                     type: flagDetails.type || 'string',
                     options: flagDetails.options,
-                    default: flagDetails.default
+                    default: flagDetails.default,
                 };
             });
             return {
@@ -164,14 +166,14 @@ function getAllSfCommands() {
                 description: jsonCmd.summary || jsonCmd.description || jsonCmd.id,
                 fullCommand,
                 flags,
-                topic
+                topic,
             };
         });
         console.error(`Successfully processed ${sfCommands.length} commands`);
         return sfCommands;
     }
     catch (error) {
-        console.error("Error getting SF commands:", error);
+        console.error('Error getting SF commands:', error);
         return [];
     }
 }
@@ -233,12 +235,12 @@ function commandToZodSchema(command) {
  */
 function getSfVersion() {
     try {
-        const versionOutput = executeSfCommand("--version");
+        const versionOutput = executeSfCommand('--version');
         const versionMatch = versionOutput.match(/sf\/(\d+\.\d+\.\d+)/);
         return versionMatch ? versionMatch[1] : 'unknown';
     }
     catch (error) {
-        console.error("Error getting SF version:", error);
+        console.error('Error getting SF version:', error);
         return 'unknown';
     }
 }
@@ -255,13 +257,13 @@ function saveCommandCache(commands) {
         const cache = {
             version: sfVersion,
             timestamp: Date.now(),
-            commands
+            commands,
         };
         fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
         console.error(`Command cache saved to ${CACHE_FILE} (SF version: ${sfVersion})`);
     }
     catch (error) {
-        console.error("Error saving command cache:", error);
+        console.error('Error saving command cache:', error);
     }
 }
 /**
@@ -271,20 +273,20 @@ function saveCommandCache(commands) {
 function loadCommandCache() {
     try {
         if (!fs.existsSync(CACHE_FILE)) {
-            console.error("Command cache file does not exist");
+            console.error('Command cache file does not exist');
             return null;
         }
         const cacheData = fs.readFileSync(CACHE_FILE, 'utf8');
         const cache = JSON.parse(cacheData);
         // Validate cache structure
         if (!cache.version || !cache.timestamp || !Array.isArray(cache.commands)) {
-            console.error("Invalid cache structure");
+            console.error('Invalid cache structure');
             return null;
         }
         // Check if cache is expired
         const now = Date.now();
         if (now - cache.timestamp > CACHE_MAX_AGE) {
-            console.error("Cache is expired");
+            console.error('Cache is expired');
             return null;
         }
         // Verify that SF version matches
@@ -298,7 +300,7 @@ function loadCommandCache() {
         return cache.commands;
     }
     catch (error) {
-        console.error("Error loading command cache:", error);
+        console.error('Error loading command cache:', error);
         return null;
     }
 }
@@ -308,22 +310,19 @@ function loadCommandCache() {
  */
 export async function registerSfCommands(server) {
     try {
-        console.error("Starting SF command registration");
+        console.error('Starting SF command registration');
         // Try to load commands from cache first
         let sfCommands = loadCommandCache();
         // If cache doesn't exist or is invalid, fetch commands directly
         if (!sfCommands) {
-            console.error("Cache not available or invalid, fetching commands directly");
+            console.error('Cache not available or invalid, fetching commands directly');
             sfCommands = getAllSfCommands();
             // Save to cache for future use
             saveCommandCache(sfCommands);
         }
         // List of manually defined tools to avoid conflicts
         // Only includes the utility cache management tools
-        const reservedTools = [
-            'sf_cache_clear',
-            'sf_cache_refresh'
-        ];
+        const reservedTools = ['sf_cache_clear', 'sf_cache_refresh'];
         // Keep track of registered tools and aliases to avoid duplicates
         const registeredTools = new Set(reservedTools);
         const registeredAliases = new Set();
@@ -359,20 +358,24 @@ export async function registerSfCommands(server) {
                     try {
                         const output = executeSfCommand(commandStr);
                         return {
-                            content: [{
-                                    type: "text",
-                                    text: output
-                                }]
+                            content: [
+                                {
+                                    type: 'text',
+                                    text: output,
+                                },
+                            ],
                         };
                     }
                     catch (error) {
                         console.error(`Error executing ${commandStr}:`, error);
                         return {
-                            content: [{
-                                    type: "text",
-                                    text: `Error: ${error.message}`
-                                }],
-                            isError: true
+                            content: [
+                                {
+                                    type: 'text',
+                                    text: `Error: ${error.message}`,
+                                },
+                            ],
+                            isError: true,
                         };
                     }
                 });
@@ -397,20 +400,24 @@ export async function registerSfCommands(server) {
                             try {
                                 const output = executeSfCommand(commandStr);
                                 return {
-                                    content: [{
-                                            type: "text",
-                                            text: output
-                                        }]
+                                    content: [
+                                        {
+                                            type: 'text',
+                                            text: output,
+                                        },
+                                    ],
                                 };
                             }
                             catch (error) {
                                 console.error(`Error executing ${commandStr}:`, error);
                                 return {
-                                    content: [{
-                                            type: "text",
-                                            text: `Error: ${error.message}`
-                                        }],
-                                    isError: true
+                                    content: [
+                                        {
+                                            type: 'text',
+                                            text: `Error: ${error.message}`,
+                                        },
+                                    ],
+                                    isError: true,
                                 };
                             }
                         });
@@ -435,7 +442,7 @@ export async function registerSfCommands(server) {
         return totalTools;
     }
     catch (error) {
-        console.error("Error registering SF commands:", error);
+        console.error('Error registering SF commands:', error);
         return 0;
     }
 }

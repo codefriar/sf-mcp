@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="chore(lint): prettier and eslint&#10;&#10;rules applied">
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="chore(packaging): added standard-release">
+      <change beforePath="$PROJECT_DIR$/build/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/sfCommands.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/sfCommands.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/utils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +76,7 @@
       <workItem from="1743015381427" duration="2834000" />
       <workItem from="1743030208472" duration="5343000" />
       <workItem from="1743138461831" duration="925000" />
-      <workItem from="1743139755619" duration="3769000" />
+      <workItem from="1743139755619" duration="4071000" />
     </task>
     <task id="LOCAL-00001" summary="feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`">
       <option name="closed" value="true" />
@@ -91,7 +94,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743143924176</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="chore(packaging): added standard-release">
+      <option name="closed" value="true" />
+      <created>1743144159287</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743144159287</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -112,7 +123,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`" />
     <MESSAGE value="chore(lint): prettier and eslint&#10;&#10;rules applied" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(lint): prettier and eslint&#10;&#10;rules applied" />
+    <MESSAGE value="chore(packaging): added standard-release" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore(packaging): added standard-release" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
