@@ -1,0 +1,42 @@
+{
+  "name": "sf-mcp",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "type": "module",
+  "bin": {
+    "sfmcp": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "start": "node build/index.js",
+    "dev": "tsc -w",
+    "lint": "eslint src",
+    "prepare": "npm run build",
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "salesforce",
+    "sf",
+    "cli",
+    "llm"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Model Context Protocol (MCP) server for the Salesforce CLI, making Salesforce CLI commands available to LLM tools.",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.8.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@types/node": "^22.13.14",
+    "eslint": "^9.23.0",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.28.0"
+  }
+}
