@@ -63,46 +63,53 @@ This MCP server provides Salesforce CLI commands as MCP tools. It automatically 
 The following commands are specifically implemented and guaranteed to work:
 
 #### Organization Management
+
 - `sf_org_list` - List Salesforce orgs
-  - Parameters: `json`, `verbose`
+    - Parameters: `json`, `verbose`
 - `sf_auth_list_orgs` - List authenticated Salesforce orgs
-  - Parameters: `json`, `verbose`
+    - Parameters: `json`, `verbose`
 - `sf_org_display` - Display details about an org
-  - Parameters: `targetusername`, `json`
+    - Parameters: `targetusername`, `json`
 - `sf_org_open` - Open an org in the browser
-  - Parameters: `targetusername`, `path`, `urlonly`
+    - Parameters: `targetusername`, `path`, `urlonly`
 
 #### Apex Code
+
 - `sf_apex_run` - Run anonymous Apex code
-  - Parameters: `targetusername`, `file`, `apexcode`, `json`
+    - Parameters: `targetusername`, `file`, `apexcode`, `json`
 - `sf_apex_test_run` - Run Apex tests
-  - Parameters: `targetusername`, `testnames`, `suitenames`, `classnames`, `json`
+    - Parameters: `targetusername`, `testnames`, `suitenames`, `classnames`, `json`
 
 #### Data Management
+
 - `sf_data_query` - Execute a SOQL query
-  - Parameters: `targetusername`, `query`, `json`
+    - Parameters: `targetusername`, `query`, `json`
 - `sf_schema_list_objects` - List sObjects in the org
-  - Parameters: `targetusername`, `json`
+    - Parameters: `targetusername`, `json`
 - `sf_schema_describe` - Describe a Salesforce object
-  - Parameters: `targetusername`, `sobject`, `json`
+    - Parameters: `targetusername`, `sobject`, `json`
 
 #### Deployment
+
 - `sf_project_deploy_start` - Deploy source to an org
-  - Parameters: `targetusername`, `sourcedir`, `json`, `wait`
+    - Parameters: `targetusername`, `sourcedir`, `json`, `wait`
 
 ### Dynamically Discovered Tools
 
 The server discovers all available Salesforce CLI commands and registers them as tools with format: `sf_<topic>_<command>`.
 
 For example:
+
 - `sf_apex_run` - Run anonymous Apex code
 - `sf_data_query` - Execute a SOQL query
 
 For nested topic commands, the tool name includes the full path with underscores:
+
 - `sf_apex_log_get` - Get apex logs
 - `sf_org_login_web` - Login to an org using web flow
 
 The server also creates simplified aliases for common nested commands where possible:
+
 - `sf_get` as an alias for `sf_apex_log_get`
 - `sf_web` as an alias for `sf_org_login_web`
 
@@ -160,7 +167,7 @@ If specific commands are still missing or you've installed new SF CLI plugins:
 The Salesforce CLI has a hierarchical command structure that can be several levels deep. This MCP server handles these nested commands by:
 
 - Converting colon-separated paths to underscore format (`apex:log:get` → `sf_apex_log_get`)
-- Providing aliases for common deep commands when possible (`sf_get` for `sf_apex_log_get`) 
+- Providing aliases for common deep commands when possible (`sf_get` for `sf_apex_log_get`)
 - Preserving the full command hierarchy in the tool names
 - Using the official command structure from `sf commands --json`
 

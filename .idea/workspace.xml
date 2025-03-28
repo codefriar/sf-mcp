@@ -5,25 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_blame.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/resources.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/sfCommands.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/utils.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/eslint.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sfCommands.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sfCommands.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sfCommands.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,13 +51,12 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "js.linters.configure.manually.selectedeslint": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.eslint": "/Users/kpoorman/src/sfMcp/node_modules/@eslint/eslintrc",
     "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
@@ -92,8 +84,17 @@
       <workItem from="1743015381427" duration="2834000" />
       <workItem from="1743030208472" duration="5343000" />
       <workItem from="1743138461831" duration="925000" />
-      <workItem from="1743139755619" duration="2542000" />
+      <workItem from="1743139755619" duration="3594000" />
     </task>
+    <task id="LOCAL-00001" summary="feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`">
+      <option name="closed" value="true" />
+      <created>1743142354973</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743142354973</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,14 +119,5 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
-  </component>
-  <component name="com.github.lppedd.cc.CommitBuilderDialog">
-    <type>feat</type>
-    <scope>tools</scope>
-    <subject>autodiscovery of tools</subject>
-    <body>based on `sf commands --json`</body>
-    <footers>
-      <entry type="" value="" />
-    </footers>
   </component>
 </project>
