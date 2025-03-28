@@ -13,7 +13,8 @@
         "lint": "eslint src",
         "prepare": "npm run build",
         "format": "prettier --write \"**/*.{ts,json,md}\"",
-        "test": "echo \"No tests configured\" && exit 0"
+        "test": "echo \"No tests configured\" && exit 0",
+        "release": "standard-version && git push --follow-tags origin main && npm publish"
     },
     "files": [
         "build"
@@ -38,6 +39,8 @@
         "@types/node": "^22.13.14",
         "eslint": "^9.23.0",
         "prettier": "^3.5.3",
+        "standard-release": "^0.2.0",
+        "standard-version": "^9.5.0",
         "typescript": "^5.8.2",
         "typescript-eslint": "^8.28.0"
     }
