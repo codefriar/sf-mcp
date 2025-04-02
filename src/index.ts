@@ -8,7 +8,7 @@ import { registerResources } from './resources.js';
 // Create an MCP server
 const server = new McpServer({
     name: 'Salesforce CLI MCP',
-    version: '1.0.0',
+    version: '1.1.0',
     description: 'MCP server for Salesforce CLI integration',
 });
 
@@ -24,7 +24,7 @@ server.tool('sf_cache_clear', {}, async () => {
                     ? 'Command cache cleared successfully.'
                     : 'Failed to clear command cache or cache did not exist.',
             },
-        ],
+        ]
     };
 });
 

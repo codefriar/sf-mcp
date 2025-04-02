@@ -167,6 +167,36 @@ const SF_BINARY_PATH = (() => {
 export function executeSfCommand(command: string): string {
     try {
         console.error(`Executing: ${SF_BINARY_PATH} ${command}`);
+        
+        // Check if target-org parameter is 'default' and replace with the default org
+        if (command.includes('--target-org default') || command.includes('--target-org=default')) {
+            // Get the default org from sf org list
+            const orgListOutput = execSync(`"${SF_BINARY_PATH}" org list --json`, {
+                encoding: 'utf8',
+                maxBuffer: 10 * 1024 * 1024,
+            });
+            
+            const orgList = JSON.parse(orgListOutput);
+            let defaultUsername = '';
+            
+            // Look for the default org across different org types
+            for (const orgType of ['nonScratchOrgs', 'scratchOrgs', 'sandboxes']) {
+                if (orgList.result[orgType]) {
+                    const defaultOrg = orgList.result[orgType].find((org: any) => org.isDefaultUsername);
+                    if (defaultOrg) {
+                        defaultUsername = defaultOrg.username;
+                        break;
+                    }
+                }
+            }
+            
+            if (defaultUsername) {
+                // Replace 'default' with the actual default org username
+                command = command.replace(/--target-org[= ]default/, `--target-org ${defaultUsername}`);
+                console.error(`Using default org: ${defaultUsername}`);
+            }
+        }
+        
         return execSync(`"${SF_BINARY_PATH}" ${command}`, {
             encoding: 'utf8',
             maxBuffer: 10 * 1024 * 1024,
