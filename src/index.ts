@@ -48,15 +48,14 @@ server.tool('sf_cache_refresh', {}, async () => {
 
 // Tool for automatically detecting project directories from messages
 server.tool('sf_detect_project_directory', {}, async () => {
-    // We can't access message history in this version of MCP
-    // This is just a placeholder - in real usage the LLM will need to
-    // extract the directory from the user's message and pass it to sf_set_project_directory
+    // Since we can't access the message in this version of MCP,
+    // we need to rely on the LLM to extract the directory and use sf_set_project_directory
     
     return {
         content: [
             {
                 type: 'text',
-                text: 'To set a project directory, please use sf_set_project_directory with the path to your Salesforce project.',
+                text: 'To set a project directory, please use sf_set_project_directory with the path to your Salesforce project, or include the project path in your message using formats like "Execute in /path/to/project" or "Use project in /path/to/project".',
             },
         ],
     };

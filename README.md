@@ -58,6 +58,25 @@ This MCP server provides Salesforce CLI commands as MCP tools. It automatically 
 - `sf_cache_clear` - Clear the command discovery cache
 - `sf_cache_refresh` - Refresh the command discovery cache
 
+### Project Directory Management
+
+For commands that require a Salesforce project context (like deployments), you must specify the project directory:
+
+- `sf_set_project_directory` - Set the Salesforce project directory to use for commands
+  - Parameters: `directory` - Path to a directory containing an sfdx-project.json file
+- `sf_detect_project_directory` - Attempt to detect project directory from user messages
+
+Example usage:
+```
+# Set project directory
+sf_set_project_directory --directory=/path/to/your/sfdx/project
+
+# Or include in your message:
+"Please deploy the apex code from the project in /path/to/your/sfdx/project to my scratch org"
+```
+
+Project directory must be specified for commands such as deployments, source retrieval, and other project-specific operations.
+
 ### Key Implemented Tools
 
 The following commands are specifically implemented and guaranteed to work:
@@ -136,6 +155,17 @@ The following resources provide documentation about Salesforce CLI:
 5. All commands are registered as MCP tools with appropriate parameter schemas
 6. Resources are registered for help documentation
 7. When a tool is called, the corresponding Salesforce CLI command is executed
+
+### Project Directory Detection
+
+For commands that require a Salesforce project context:
+
+1. The server checks if a project directory has been set via `sf_set_project_directory`
+2. If not set, the server will prompt the user to specify a project directory
+3. Commands are executed within the specified project directory, ensuring proper context
+4. The user can specify a different project directory at any time
+
+Project-specific commands (like deployments, retrievals, etc.) will automatically run in the specified project directory. For commands that don't require a project context, the working directory doesn't matter.
 
 ### Command Caching
 

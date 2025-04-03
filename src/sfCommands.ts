@@ -263,16 +263,40 @@ Please specify a project directory using the format:
             
             console.error(`Executing command in Salesforce project directory: ${userProjectDirectory}`);
             
-            // Execute the command within the specified project directory
-            return execSync(`"${SF_BINARY_PATH}" ${command}`, {
-                encoding: 'utf8',
-                maxBuffer: 10 * 1024 * 1024,
-                env: {
-                    ...process.env,
-                    PATH: process.env.PATH,
-                },
-                cwd: userProjectDirectory
-            });
+            try {
+                // Execute the command within the specified project directory
+                const result = execSync(`"${SF_BINARY_PATH}" ${command}`, {
+                    encoding: 'utf8',
+                    maxBuffer: 10 * 1024 * 1024,
+                    env: {
+                        ...process.env,
+                        PATH: process.env.PATH,
+                    },
+                    cwd: userProjectDirectory,
+                    stdio: ['pipe', 'pipe', 'pipe'] // Capture stderr too
+                });
+                
+                console.error('Command execution successful');
+                return result;
+            } catch (projectError: any) {
+                console.error(`Error executing command in project context: ${projectError.message}`);
+                
+                // Capture both stdout and stderr for better error diagnostics
+                let errorOutput = '';
+                if (projectError.stdout) {
+                    errorOutput += projectError.stdout;
+                }
+                if (projectError.stderr) {
+                    errorOutput += `\n\nError details: ${projectError.stderr}`;
+                }
+                
+                if (errorOutput) {
+                    console.error(`Command output: ${errorOutput}`);
+                    return errorOutput;
+                }
+                
+                return `Error executing command: ${projectError.message}`;
+            }
         } else {
             // Standard execution for commands that don't require project context
             return execSync(`"${SF_BINARY_PATH}" ${command}`, {
@@ -285,10 +309,23 @@ Please specify a project directory using the format:
             });
         }
     } catch (error: any) {
+        console.error(`Top-level error executing command: ${error.message}`);
+        
+        // Capture both stdout and stderr 
+        let errorOutput = '';
         if (error.stdout) {
-            return error.stdout;
+            errorOutput += error.stdout;
         }
-        throw new Error(`Error executing command: ${error.message}`);
+        if (error.stderr) {
+            errorOutput += `\n\nError details: ${error.stderr}`;
+        }
+        
+        if (errorOutput) {
+            console.error(`Command output: ${errorOutput}`);
+            return errorOutput;
+        }
+        
+        return `Error executing command: ${error.message}`;
     }
 }
 
@@ -572,6 +609,20 @@ export async function registerSfCommands(server: McpServer): Promise<number> {
                     console.error(`Executing: sf ${commandStr}`);
                     try {
                         const output = executeSfCommand(commandStr);
+                        // Check if the output indicates an error but was returned as normal output
+                        if (output && (output.includes('Error executing command') || output.includes('Error details:'))) {
+                            console.error(`Command returned error: ${output}`);
+                            return {
+                                content: [
+                                    {
+                                        type: 'text',
+                                        text: output,
+                                    },
+                                ],
+                                isError: true,
+                            };
+                        }
+                        
                         return {
                             content: [
                                 {
@@ -582,11 +633,12 @@ export async function registerSfCommands(server: McpServer): Promise<number> {
                         };
                     } catch (error: any) {
                         console.error(`Error executing ${commandStr}:`, error);
+                        const errorMessage = error.stdout || error.stderr || error.message || 'Unknown error';
                         return {
                             content: [
                                 {
                                     type: 'text',
-                                    text: `Error: ${error.message}`,
+                                    text: `Error: ${errorMessage}`,
                                 },
                             ],
                             isError: true,
@@ -618,6 +670,20 @@ export async function registerSfCommands(server: McpServer): Promise<number> {
                             console.error(`Executing (via alias ${simplifiedToolName}): sf ${commandStr}`);
                             try {
                                 const output = executeSfCommand(commandStr);
+                                // Check if the output indicates an error but was returned as normal output
+                                if (output && (output.includes('Error executing command') || output.includes('Error details:'))) {
+                                    console.error(`Command returned error: ${output}`);
+                                    return {
+                                        content: [
+                                            {
+                                                type: 'text',
+                                                text: output,
+                                            },
+                                        ],
+                                        isError: true,
+                                    };
+                                }
+                                
                                 return {
                                     content: [
                                         {
@@ -628,11 +694,12 @@ export async function registerSfCommands(server: McpServer): Promise<number> {
                                 };
                             } catch (error: any) {
                                 console.error(`Error executing ${commandStr}:`, error);
+                                const errorMessage = error.stdout || error.stderr || error.message || 'Unknown error';
                                 return {
                                     content: [
                                         {
                                             type: 'text',
-                                            text: `Error: ${error.message}`,
+                                            text: `Error: ${errorMessage}`,
                                         },
                                     ],
                                     isError: true,

@@ -96,6 +96,56 @@ const SF_BINARY_PATH = (() => {
  * @param command The sf command to run
  * @returns The stdout output from the command
  */
+// Store the user-provided project directory
+let userProjectDirectory = null;
+/**
+ * Set the Salesforce project directory to use for commands
+ * @param directory The directory containing sfdx-project.json
+ */
+export function setProjectDirectory(directory) {
+    try {
+        // Validate that the directory exists and contains an sfdx-project.json file
+        const projectFilePath = path.join(directory, 'sfdx-project.json');
+        if (!fs.existsSync(directory)) {
+            console.error(`Directory does not exist: ${directory}`);
+            return false;
+        }
+        if (!fs.existsSync(projectFilePath)) {
+            console.error(`Directory does not contain sfdx-project.json: ${directory}`);
+            return false;
+        }
+        userProjectDirectory = directory;
+        console.error(`Set Salesforce project directory to: ${directory}`);
+        return true;
+    }
+    catch (error) {
+        console.error('Error setting project directory:', error);
+        return false;
+    }
+}
+/**
+ * Checks if a command requires a Salesforce project context
+ * @param command The SF command to check
+ * @returns True if the command requires a Salesforce project context
+ */
+function requiresSalesforceProjectContext(command) {
+    // List of commands or command prefixes that require a Salesforce project context
+    const projectContextCommands = [
+        'project deploy',
+        'project retrieve',
+        'project delete',
+        'project convert',
+        'package version create',
+        'package1 version create',
+        'source',
+        'mdapi',
+        'apex',
+        'lightning',
+        'schema generate'
+    ];
+    // Check if the command matches any of the project context commands
+    return projectContextCommands.some(contextCmd => command.startsWith(contextCmd));
+}
 export function executeSfCommand(command) {
     try {
         console.error(`Executing: ${SF_BINARY_PATH} ${command}`);
@@ -124,20 +174,74 @@ export function executeSfCommand(command) {
                 console.error(`Using default org: ${defaultUsername}`);
             }
         }
-        return execSync(`"${SF_BINARY_PATH}" ${command}`, {
-            encoding: 'utf8',
-            maxBuffer: 10 * 1024 * 1024,
-            env: {
-                ...process.env,
-                PATH: process.env.PATH,
-            },
-        });
+        // Check if this command requires a Salesforce project context
+        if (requiresSalesforceProjectContext(command)) {
+            // If we don't have a user-provided project directory, inform the user
+            if (!userProjectDirectory) {
+                return `This command requires a Salesforce project context (sfdx-project.json).
+Please specify a project directory using the format:
+"Execute in <directory_path>" or "Use project in <directory_path>"`;
+            }
+            console.error(`Executing command in Salesforce project directory: ${userProjectDirectory}`);
+            try {
+                // Execute the command within the specified project directory
+                const result = execSync(`"${SF_BINARY_PATH}" ${command}`, {
+                    encoding: 'utf8',
+                    maxBuffer: 10 * 1024 * 1024,
+                    env: {
+                        ...process.env,
+                        PATH: process.env.PATH,
+                    },
+                    cwd: userProjectDirectory,
+                    stdio: ['pipe', 'pipe', 'pipe'] // Capture stderr too
+                });
+                console.error('Command execution successful');
+                return result;
+            }
+            catch (projectError) {
+                console.error(`Error executing command in project context: ${projectError.message}`);
+                // Capture both stdout and stderr for better error diagnostics
+                let errorOutput = '';
+                if (projectError.stdout) {
+                    errorOutput += projectError.stdout;
+                }
+                if (projectError.stderr) {
+                    errorOutput += `\n\nError details: ${projectError.stderr}`;
+                }
+                if (errorOutput) {
+                    console.error(`Command output: ${errorOutput}`);
+                    return errorOutput;
+                }
+                return `Error executing command: ${projectError.message}`;
+            }
+        }
+        else {
+            // Standard execution for commands that don't require project context
+            return execSync(`"${SF_BINARY_PATH}" ${command}`, {
+                encoding: 'utf8',
+                maxBuffer: 10 * 1024 * 1024,
+                env: {
+                    ...process.env,
+                    PATH: process.env.PATH,
+                },
+            });
+        }
     }
     catch (error) {
+        console.error(`Top-level error executing command: ${error.message}`);
+        // Capture both stdout and stderr 
+        let errorOutput = '';
         if (error.stdout) {
-            return error.stdout;
+            errorOutput += error.stdout;
         }
-        throw new Error(`Error executing command: ${error.message}`);
+        if (error.stderr) {
+            errorOutput += `\n\nError details: ${error.stderr}`;
+        }
+        if (errorOutput) {
+            console.error(`Command output: ${errorOutput}`);
+            return errorOutput;
+        }
+        return `Error executing command: ${error.message}`;
     }
 }
 /**
@@ -382,6 +486,19 @@ export async function registerSfCommands(server) {
                     console.error(`Executing: sf ${commandStr}`);
                     try {
                         const output = executeSfCommand(commandStr);
+                        // Check if the output indicates an error but was returned as normal output
+                        if (output && (output.includes('Error executing command') || output.includes('Error details:'))) {
+                            console.error(`Command returned error: ${output}`);
+                            return {
+                                content: [
+                                    {
+                                        type: 'text',
+                                        text: output,
+                                    },
+                                ],
+                                isError: true,
+                            };
+                        }
                         return {
                             content: [
                                 {
@@ -393,11 +510,12 @@ export async function registerSfCommands(server) {
                     }
                     catch (error) {
                         console.error(`Error executing ${commandStr}:`, error);
+                        const errorMessage = error.stdout || error.stderr || error.message || 'Unknown error';
                         return {
                             content: [
                                 {
                                     type: 'text',
-                                    text: `Error: ${error.message}`,
+                                    text: `Error: ${errorMessage}`,
                                 },
                             ],
                             isError: true,
@@ -424,6 +542,19 @@ export async function registerSfCommands(server) {
                             console.error(`Executing (via alias ${simplifiedToolName}): sf ${commandStr}`);
                             try {
                                 const output = executeSfCommand(commandStr);
+                                // Check if the output indicates an error but was returned as normal output
+                                if (output && (output.includes('Error executing command') || output.includes('Error details:'))) {
+                                    console.error(`Command returned error: ${output}`);
+                                    return {
+                                        content: [
+                                            {
+                                                type: 'text',
+                                                text: output,
+                                            },
+                                        ],
+                                        isError: true,
+                                    };
+                                }
                                 return {
                                     content: [
                                         {
@@ -435,11 +566,12 @@ export async function registerSfCommands(server) {
                             }
                             catch (error) {
                                 console.error(`Error executing ${commandStr}:`, error);
+                                const errorMessage = error.stdout || error.stderr || error.message || 'Unknown error';
                                 return {
                                     content: [
                                         {
                                             type: 'text',
-                                            text: `Error: ${error.message}`,
+                                            text: `Error: ${errorMessage}`,
                                         },
                                     ],
                                     isError: true,
