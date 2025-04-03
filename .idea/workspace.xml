@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="chore(build): build version">
+    <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx">
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/sfCommands.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/sfCommands.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sfCommands.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sfCommands.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +76,7 @@
       <workItem from="1743138461831" duration="925000" />
       <workItem from="1743139755619" duration="9045000" />
       <workItem from="1743222211272" duration="953000" />
+      <workItem from="1743606226833" duration="2474000" />
     </task>
     <task id="LOCAL-00001" summary="feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`">
       <option name="closed" value="true" />
@@ -113,7 +110,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743144468869</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx">
+      <option name="closed" value="true" />
+      <created>1743613695726</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743613695726</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,7 +129,8 @@
     <MESSAGE value="chore(lint): prettier and eslint&#10;&#10;rules applied" />
     <MESSAGE value="chore(packaging): added standard-release" />
     <MESSAGE value="chore(build): build version" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(build): build version" />
+    <MESSAGE value="chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
