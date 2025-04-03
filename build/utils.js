@@ -2,6 +2,39 @@
  * Utility functions for working with the Salesforce CLI
  */
 /**
+ * Parse a user message to look for project directory specification
+ * @param message A message from the user that might contain project directory specification
+ * @returns The extracted directory path, or null if none found
+ */
+export function extractProjectDirectoryFromMessage(message) {
+    if (!message)
+        return null;
+    // Common patterns for specifying project directories
+    const patterns = [
+        // "Execute in /path/to/project"
+        /[Ee]xecute\s+(?:in|from)\s+(['"]?)([\/~][^\n'"]+)\1/,
+        // "Run in /path/to/project"
+        /[Rr]un\s+(?:in|from)\s+(['"]?)([\/~][^\n'"]+)\1/,
+        // "Use project in /path/to/project"
+        /[Uu]se\s+project\s+(?:in|from|at)\s+(['"]?)([\/~][^\n'"]+)\1/,
+        // "Set project directory to /path/to/project"
+        /[Ss]et\s+project\s+directory\s+(?:to|as)\s+(['"]?)([\/~][^\n'"]+)\1/,
+        // "Project is at /path/to/project"
+        /[Pp]roject\s+(?:is|located)\s+(?:at|in)\s+(['"]?)([\/~][^\n'"]+)\1/,
+        // "My project is in /path/to/project"
+        /[Mm]y\s+project\s+is\s+(?:at|in)\s+(['"]?)([\/~][^\n'"]+)\1/,
+        // "/path/to/project is my project"
+        /(['"]?)([\/~][^\n'"]+)\1\s+is\s+my\s+(?:project|directory)/,
+    ];
+    for (const pattern of patterns) {
+        const match = message.match(pattern);
+        if (match) {
+            return match[2];
+        }
+    }
+    return null;
+}
+/**
  * Formats an object as a string representation of CLI flags
  * @param flags Key-value pairs of flag names and values
  * @returns Formatted flags string suitable for command line
