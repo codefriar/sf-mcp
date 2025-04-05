@@ -174,16 +174,16 @@ export function executeSfCommand(command) {
                 console.error(`Using default org: ${defaultUsername}`);
             }
         }
-        // Check if this command requires a Salesforce project context
-        if (requiresSalesforceProjectContext(command)) {
-            // If we don't have a user-provided project directory, inform the user
-            if (!userProjectDirectory) {
-                return `This command requires a Salesforce project context (sfdx-project.json).
+        // Check if this command requires a Salesforce project context and we don't have a project directory
+        if (requiresSalesforceProjectContext(command) && !userProjectDirectory) {
+            return `This command requires a Salesforce project context (sfdx-project.json).
 Please specify a project directory using the format:
 "Execute in <directory_path>" or "Use project in <directory_path>"`;
-            }
-            console.error(`Executing command in Salesforce project directory: ${userProjectDirectory}`);
-            try {
+        }
+        try {
+            // Always execute in project directory if available
+            if (userProjectDirectory) {
+                console.error(`Executing command in Salesforce project directory: ${userProjectDirectory}`);
                 // Execute the command within the specified project directory
                 const result = execSync(`"${SF_BINARY_PATH}" ${command}`, {
                     encoding: 'utf8',
@@ -198,33 +198,33 @@ Please specify a project directory using the format:
                 console.error('Command execution successful');
                 return result;
             }
-            catch (projectError) {
-                console.error(`Error executing command in project context: ${projectError.message}`);
-                // Capture both stdout and stderr for better error diagnostics
-                let errorOutput = '';
-                if (projectError.stdout) {
-                    errorOutput += projectError.stdout;
-                }
-                if (projectError.stderr) {
-                    errorOutput += `\n\nError details: ${projectError.stderr}`;
-                }
-                if (errorOutput) {
-                    console.error(`Command output: ${errorOutput}`);
-                    return errorOutput;
-                }
-                return `Error executing command: ${projectError.message}`;
+            else {
+                // Standard execution for when no project directory is set
+                return execSync(`"${SF_BINARY_PATH}" ${command}`, {
+                    encoding: 'utf8',
+                    maxBuffer: 10 * 1024 * 1024,
+                    env: {
+                        ...process.env,
+                        PATH: process.env.PATH,
+                    },
+                });
             }
         }
-        else {
-            // Standard execution for commands that don't require project context
-            return execSync(`"${SF_BINARY_PATH}" ${command}`, {
-                encoding: 'utf8',
-                maxBuffer: 10 * 1024 * 1024,
-                env: {
-                    ...process.env,
-                    PATH: process.env.PATH,
-                },
-            });
+        catch (execError) {
+            console.error(`Error executing command: ${execError.message}`);
+            // Capture both stdout and stderr for better error diagnostics
+            let errorOutput = '';
+            if (execError.stdout) {
+                errorOutput += execError.stdout;
+            }
+            if (execError.stderr) {
+                errorOutput += `\n\nError details: ${execError.stderr}`;
+            }
+            if (errorOutput) {
+                console.error(`Command output: ${errorOutput}`);
+                return errorOutput;
+            }
+            return `Error executing command: ${execError.message}`;
         }
     }
     catch (error) {
