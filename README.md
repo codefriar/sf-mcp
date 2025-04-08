@@ -32,10 +32,57 @@ npm install
 ### Starting the server
 
 ```bash
+# Basic usage
 npm start
+
+# With project roots
+npm start /path/to/project1 /path/to/project2
+# or using the convenience script
+npm run with-roots /path/to/project1 /path/to/project2
+
+# As an npx package with roots
+npx -y codefriar/sf-mcp /path/to/project1 /path/to/project2
 ```
 
-This will start the MCP server with stdio transport, which can be used with MCP clients like the [MCP Inspector](https://github.com/modelcontextprotocol/inspector) or Claude Desktop.
+The MCP server uses stdio transport, which can be used with MCP clients 
+like the [MCP Inspector](https://github.com/modelcontextprotocol/inspector) or Claude Desktop.
+
+### Configuring in Claude Desktop
+
+To configure this MCP in Claude Desktop's `.claude.json` configuration:
+
+```json
+{
+  "tools": {
+    "salesforce": {
+      "command": "/path/to/node",
+      "args": [
+        "/path/to/sf-mcp/build/index.js",
+        "/path/to/project1",
+        "/path/to/project2"
+      ]
+    }
+  }
+}
+```
+
+Using the npm package directly:
+
+```json
+{
+  "tools": {
+    "salesforce": {
+      "command": "/path/to/npx", 
+      "args": [
+        "-y",
+        "codefriar/sf-mcp",
+        "/path/to/project1",
+        "/path/to/project2"
+      ]
+    }
+  }
+}
+```
 
 ### Development
 
@@ -44,7 +91,7 @@ This will start the MCP server with stdio transport, which can be used with MCP 
 npm run dev
 
 # In another terminal
-npm start
+npm start [optional project roots...]
 ```
 
 ## Available Tools and Resources
@@ -58,24 +105,63 @@ This MCP server provides Salesforce CLI commands as MCP tools. It automatically 
 - `sf_cache_clear` - Clear the command discovery cache
 - `sf_cache_refresh` - Refresh the command discovery cache
 
-### Project Directory Management
+### Project Directory Management (Roots)
 
-For commands that require a Salesforce project context (like deployments), you must specify the project directory:
+For commands that require a Salesforce project context (like deployments), you must specify the project directory.
+The MCP supports multiple project directories (roots) similar to the filesystem MCP.
 
-- `sf_set_project_directory` - Set the Salesforce project directory to use for commands
-  - Parameters: `directory` - Path to a directory containing an sfdx-project.json file
+#### Configuration Methods
+
+**Method 1: Via Command Line Arguments**
+```bash
+# Start the MCP with project roots
+npm start /path/to/project1 /path/to/project2
+# or
+npx -y codefriar/sf-mcp /path/to/project1 /path/to/project2
+```
+
+When configured this way, the roots will be automatically named `root1`, `root2`, etc., 
+with the first one set as default.
+
+**Method 2: Using MCP Tools**
+- `sf_set_project_directory` - Set a Salesforce project directory to use for commands
+  - Parameters: 
+    - `directory` - Path to a directory containing a sfdx-project.json file
+    - `name` - (Optional) Name for this project root
+    - `description` - (Optional) Description for this project root
+    - `isDefault` - (Optional) Set this root as the default for command execution
+- `sf_list_roots` - List all configured project roots
 - `sf_detect_project_directory` - Attempt to detect project directory from user messages
 
 Example usage:
 ```
-# Set project directory
-sf_set_project_directory --directory=/path/to/your/sfdx/project
+# Set project directory with a name
+sf_set_project_directory --directory=/path/to/your/sfdx/project --name=project1 --isDefault=true
+
+# List all configured roots
+sf_list_roots
 
 # Or include in your message:
 "Please deploy the apex code from the project in /path/to/your/sfdx/project to my scratch org"
 ```
 
-Project directory must be specified for commands such as deployments, source retrieval, and other project-specific operations.
+**Method 3: Claude Desktop Configuration**
+Configure project roots in `.claude.json` as described below.
+
+#### Using Project Roots
+
+You can execute commands in specific project roots:
+```
+# Using resource URI
+sf://roots/project1/commands/project deploy start --sourcedir=force-app
+
+# Using rootName parameter
+sf_project_deploy_start --sourcedir=force-app --rootName=project1
+```
+
+Project directory must be specified for commands such as deployments,
+source retrieval, and other project-specific operations. 
+If multiple roots are configured, the default root will be used unless otherwise specified.
 
 ### Key Implemented Tools
 
@@ -110,7 +196,7 @@ The following commands are specifically implemented and guaranteed to work:
 
 #### Deployment
 
-- `sf_project_deploy_start` - Deploy source to an org
+- `sf_project_deploy_start` - Deploy the source to an org
     - Parameters: `targetusername`, `sourcedir`, `json`, `wait`
 
 ### Dynamically Discovered Tools
@@ -145,27 +231,37 @@ The following resources provide documentation about Salesforce CLI:
 - `sf://commands/{command}/help` - Command help documentation
 - `sf://topics/{topic}/commands/{command}/help` - Topic-command help documentation
 - `sf://version` - Version information
+- `sf://roots` - List all configured project roots
+- `sf://roots/{root}/commands/{command}` - Execute a command in a specific project root
 
 ## How It Works
 
 1. At startup, the server checks for a cached list of commands (stored in `~/.sf-mcp/command-cache.json`)
 2. If a valid cache exists, it's used to register commands; otherwise, commands are discovered dynamically
-3. During discovery, the server queries `sf commands --json` to obtain a complete list of available commands
+3. During discovery, the server queries `sf commands --json` to get a complete list of available commands
 4. Command metadata (including parameters and descriptions) is extracted directly from the JSON output
 5. All commands are registered as MCP tools with appropriate parameter schemas
 6. Resources are registered for help documentation
 7. When a tool is called, the corresponding Salesforce CLI command is executed
 
-### Project Directory Detection
+### Project Roots Management
 
 For commands that require a Salesforce project context:
 
-1. The server checks if a project directory has been set via `sf_set_project_directory`
-2. If not set, the server will prompt the user to specify a project directory
-3. Commands are executed within the specified project directory, ensuring proper context
-4. The user can specify a different project directory at any time
+1. The server checks if any project roots have been configured via `sf_set_project_directory`
+2. If multiple roots are configured, it uses the default root unless a specific root is specified
+3. If no roots are set, the server will prompt the user to specify a project directory
+4. Commands are executed within the appropriate project directory, ensuring proper context
+5. The user can add or switch between multiple project roots as needed
 
-Project-specific commands (like deployments, retrievals, etc.) will automatically run in the specified project directory. For commands that don't require a project context, the working directory doesn't matter.
+Project-specific commands (like deployments, retrievals, etc.) 
+will automatically run in the appropriate project directory. 
+For commands that don't require a project context, the working directory doesn't matter.
+
+You can execute commands in specific project roots by:
+- Using the resource URI: `sf://roots/{rootName}/commands/{command}`
+- Providing a `rootName` parameter to command tools (internal implementation details)
+- Setting a specific root as the default with `sf_set_project_directory --isDefault=true`
 
 ### Command Caching
 
@@ -187,7 +283,7 @@ The first run of the server performs a full command discovery which can take som
 
 This will force a complete rediscovery of all commands using the official CLI metadata.
 
-If specific commands are still missing or you've installed new SF CLI plugins:
+If specific commands are still missing, or you've installed new SF CLI plugins:
 
 1. Use the `sf_cache_refresh` tool from Claude Desktop
 2. Stop and restart the MCP server
@@ -201,7 +297,8 @@ The Salesforce CLI has a hierarchical command structure that can be several leve
 - Preserving the full command hierarchy in the tool names
 - Using the official command structure from `sf commands --json`
 
-Nested topic commands are registered twice when possible - once with the full hierarchy name and once with a simplified alias, making them easier to discover and use.
+Nested topic commands are registered twice when possible—once with the full hierarchy name and once with a simplified alias,
+making them easier to discover and use.
 
 ## License
 

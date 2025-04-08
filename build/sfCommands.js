@@ -91,31 +91,91 @@ const SF_BINARY_PATH = (() => {
         return 'sf';
     }
 })();
+const projectRoots = [];
+let defaultRootPath = null;
 /**
- * Execute an sf command and return the results
- * @param command The sf command to run
- * @returns The stdout output from the command
+ * Validate a directory is a valid Salesforce project
+ * @param directory The directory to validate
+ * @returns boolean indicating if valid
  */
-// Store the user-provided project directory
-let userProjectDirectory = null;
+function isValidSalesforceProject(directory) {
+    const projectFilePath = path.join(directory, 'sfdx-project.json');
+    return fs.existsSync(directory) && fs.existsSync(projectFilePath);
+}
+/**
+ * Get all configured project roots
+ * @returns Array of project roots
+ */
+export function getProjectRoots() {
+    return [...projectRoots];
+}
+/**
+ * Get the default project directory (for backward compatibility)
+ * @returns The default project directory or null if none set
+ */
+export function getDefaultProjectDirectory() {
+    return defaultRootPath;
+}
 /**
  * Set the Salesforce project directory to use for commands
  * @param directory The directory containing sfdx-project.json
+ * @param options Optional parameters (name, description, isDefault)
+ * @returns boolean indicating success
  */
-export function setProjectDirectory(directory) {
+export function setProjectDirectory(directory, options = {}) {
     try {
         // Validate that the directory exists and contains an sfdx-project.json file
-        const projectFilePath = path.join(directory, 'sfdx-project.json');
-        if (!fs.existsSync(directory)) {
-            console.error(`Directory does not exist: ${directory}`);
+        if (!isValidSalesforceProject(directory)) {
+            console.error(`Invalid Salesforce project: ${directory}`);
             return false;
         }
-        if (!fs.existsSync(projectFilePath)) {
-            console.error(`Directory does not contain sfdx-project.json: ${directory}`);
-            return false;
+        // Check if this root already exists
+        const existingIndex = projectRoots.findIndex(root => root.path === directory);
+        if (existingIndex >= 0) {
+            // Update existing root with new options
+            projectRoots[existingIndex] = {
+                ...projectRoots[existingIndex],
+                ...options,
+                path: directory
+            };
+            // If this is now the default root, update defaultRootPath
+            if (options.isDefault) {
+                // Remove default flag from other roots
+                projectRoots.forEach((root, idx) => {
+                    if (idx !== existingIndex) {
+                        root.isDefault = false;
+                    }
+                });
+                defaultRootPath = directory;
+            }
+            console.error(`Updated Salesforce project root: ${directory}`);
         }
-        userProjectDirectory = directory;
-        console.error(`Set Salesforce project directory to: ${directory}`);
+        else {
+            // Add as new root
+            const isDefault = options.isDefault ?? (projectRoots.length === 0);
+            projectRoots.push({
+                path: directory,
+                name: options.name || path.basename(directory),
+                description: options.description,
+                isDefault
+            });
+            // If this is now the default root, update defaultRootPath
+            if (isDefault) {
+                // Remove default flag from other roots
+                projectRoots.forEach((root, idx) => {
+                    if (idx !== projectRoots.length - 1) {
+                        root.isDefault = false;
+                    }
+                });
+                defaultRootPath = directory;
+            }
+            console.error(`Added Salesforce project root: ${directory}`);
+        }
+        // Always ensure we have exactly one default root if any roots exist
+        if (projectRoots.length > 0 && !projectRoots.some(root => root.isDefault)) {
+            projectRoots[0].isDefault = true;
+            defaultRootPath = projectRoots[0].path;
+        }
         return true;
     }
     catch (error) {
@@ -146,7 +206,13 @@ function requiresSalesforceProjectContext(command) {
     // Check if the command matches any of the project context commands
     return projectContextCommands.some(contextCmd => command.startsWith(contextCmd));
 }
-export function executeSfCommand(command) {
+/**
+ * Execute an sf command and return the results
+ * @param command The sf command to run
+ * @param rootName Optional specific root name to use for execution
+ * @returns The stdout output from the command
+ */
+export function executeSfCommand(command, rootName) {
     try {
         console.error(`Executing: ${SF_BINARY_PATH} ${command}`);
         // Check if target-org parameter is 'default' and replace with the default org
@@ -174,16 +240,35 @@ export function executeSfCommand(command) {
                 console.error(`Using default org: ${defaultUsername}`);
             }
         }
+        // Determine which project directory to use
+        let projectDir = null;
+        // If rootName specified, find that specific root
+        if (rootName) {
+            const root = projectRoots.find(r => r.name === rootName);
+            if (root) {
+                projectDir = root.path;
+                console.error(`Using specified root "${rootName}" at ${projectDir}`);
+            }
+            else {
+                console.error(`Root "${rootName}" not found, falling back to default root`);
+                // Fall back to default
+                projectDir = defaultRootPath;
+            }
+        }
+        else {
+            // Use default root
+            projectDir = defaultRootPath;
+        }
         // Check if this command requires a Salesforce project context and we don't have a project directory
-        if (requiresSalesforceProjectContext(command) && !userProjectDirectory) {
+        if (requiresSalesforceProjectContext(command) && !projectDir) {
             return `This command requires a Salesforce project context (sfdx-project.json).
 Please specify a project directory using the format:
 "Execute in <directory_path>" or "Use project in <directory_path>"`;
         }
         try {
             // Always execute in project directory if available
-            if (userProjectDirectory) {
-                console.error(`Executing command in Salesforce project directory: ${userProjectDirectory}`);
+            if (projectDir) {
+                console.error(`Executing command in Salesforce project directory: ${projectDir}`);
                 // Execute the command within the specified project directory
                 const result = execSync(`"${SF_BINARY_PATH}" ${command}`, {
                     encoding: 'utf8',
@@ -192,7 +277,7 @@ Please specify a project directory using the format:
                         ...process.env,
                         PATH: process.env.PATH,
                     },
-                    cwd: userProjectDirectory,
+                    cwd: projectDir,
                     stdio: ['pipe', 'pipe', 'pipe'] // Capture stderr too
                 });
                 console.error('Command execution successful');

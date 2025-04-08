@@ -14,10 +14,12 @@
         "prepare": "npm run build",
         "format": "prettier --write \"**/*.{ts,json,md}\"",
         "test": "echo \"No tests configured\" && exit 0",
-        "release": "standard-version && git push --follow-tags origin main && npm publish"
+        "release": "standard-version && git push --follow-tags origin main && npm publish",
+        "with-roots": "./run.sh"
     },
     "files": [
-        "build"
+        "build",
+        "run.sh"
     ],
     "keywords": [
         "mcp",
@@ -27,9 +29,13 @@
         "cli",
         "llm"
     ],
-    "author": "",
+    "author": "Kevin Poorman",
     "license": "ISC",
-    "description": "Model Context Protocol (MCP) server for the Salesforce CLI, making Salesforce CLI commands available to LLM tools.",
+    "description": "Model Context Protocol (MCP) server for the Salesforce CLI, making Salesforce CLI commands available to LLM tools like Claude Desktop.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/codefriar/sf-mcp"
+    },
     "dependencies": {
         "@modelcontextprotocol/sdk": "^1.8.0",
         "zod": "^3.24.2"

@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx">
+    <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="feat(roots): Now with Roots&#10;&#10;Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme">
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/sfCommands.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/sfCommands.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sfCommands.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sfCommands.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,12 +31,50 @@
     &quot;assignee&quot;: &quot;codefriar&quot;
   }
 }</component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1744051088" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="feat/contextualExecution" />
+                    <option name="lastUsedInstant" value="1744051087" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;git@github.com:codefriar/sf-mcp.git&quot;,
     &quot;accountId&quot;: &quot;cd1051c7-86d1-42aa-9984-58b0635d53d5&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;codefriar&quot;,
+    &quot;repository&quot;: &quot;sf-mcp&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -43,7 +88,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feat/contextualExecution",
+    "git-widget-placeholder": "main",
     "js.linters.configure.manually.selectedeslint": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -79,7 +124,8 @@
       <workItem from="1743139755619" duration="9045000" />
       <workItem from="1743222211272" duration="953000" />
       <workItem from="1743606226833" duration="2474000" />
-      <workItem from="1743709358220" duration="1738000" />
+      <workItem from="1743709358220" duration="3768000" />
+      <workItem from="1744050930504" duration="8507000" />
     </task>
     <task id="LOCAL-00001" summary="feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`">
       <option name="closed" value="true" />
@@ -121,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743613695726</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat(context directories): All commands require a directory&#10;&#10;to execute from, so that the child_process can CWD there, and the sf cli understand it's project context">
+      <option name="closed" value="true" />
+      <created>1743826235821</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1743826235821</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,10 +187,21 @@
     <MESSAGE value="chore(packaging): added standard-release" />
     <MESSAGE value="chore(build): build version" />
     <MESSAGE value="chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx" />
+    <MESSAGE value="feat(context directories): All commands require a directory&#10;&#10;to execute from, so that the child_process can CWD there, and the sf cli understand it's project context" />
+    <MESSAGE value="feat(roots): Now with Roots&#10;&#10;Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(roots): Now with Roots&#10;&#10;Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.github.lppedd.cc.CommitBuilderDialog">
+    <type>feat</type>
+    <scope>roots</scope>
+    <subject>Now with Roots</subject>
+    <body>Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme</body>
+    <footers>
+      <entry type="" value="" />
+    </footers>
   </component>
 </project>

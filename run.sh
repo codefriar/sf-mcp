@@ -15,4 +15,6 @@ sf --version
 # Build and run the server
 echo "Building and starting MCP server..."
 npm run build
-node build/index.js
+
+# Pass all command-line arguments to the server (for project roots)
+node build/index.js "$@"

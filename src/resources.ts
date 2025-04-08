@@ -1,5 +1,5 @@
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { executeSfCommand } from './sfCommands.js';
+import { executeSfCommand, getProjectRoots } from './sfCommands.js';
 
 /**
  * Register all resources for the SF CLI MCP Server
@@ -14,6 +14,23 @@ export function registerResources(server: McpServer): void {
             },
         ],
     }));
+
+    // Project roots information
+    server.resource('sf-roots', 'sf://roots', async (uri) => {
+        const roots = getProjectRoots();
+        const rootsText = roots.length > 0 
+            ? roots.map(root => `${root.name}${root.isDefault ? ' (default)' : ''}: ${root.path}${root.description ? ` - ${root.description}` : ''}`).join('\n')
+            : 'No project roots configured. Use sf_set_project_directory to add a project root.';
+        
+        return {
+            contents: [
+                {
+                    uri: uri.href,
+                    text: rootsText,
+                },
+            ],
+        };
+    });
 
     // Topic help documentation
     server.resource(
@@ -54,6 +71,21 @@ export function registerResources(server: McpServer): void {
                 {
                     uri: uri.href,
                     text: executeSfCommand(`${topic} ${command} -h`),
+                },
+            ],
+        })
+    );
+
+    // Root-specific command help (execute in a specific root)
+    server.resource(
+        'sf-root-command',
+        new ResourceTemplate('sf://roots/{root}/commands/{command}', { list: undefined }),
+        async (uri, { root, command }) => ({
+            contents: [
+                {
+                    uri: uri.href,
+                    // Ensure command is treated as string
+                    text: executeSfCommand(String(command), String(root)),
                 },
             ],
         })
