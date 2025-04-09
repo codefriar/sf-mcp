@@ -1,0 +1,92 @@
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"CommitMessageInspectionProfile\">\n    <profile version=\"1.0\">\n      <inspection_tool class=\"CommitFormat\" enabled=\"true\" level=\"WARNING\" enabled_by_default=\"true\" />\n      <inspection_tool class=\"CommitNamingConvention\" enabled=\"true\" level=\"WARNING\" enabled_by_default=\"true\" />\n    </profile>\n  </component>\n  <component name=\"VcsDirectoryMappings\">\n    <mapping directory=\"\" vcs=\"Git\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+--- a/.idea/vcs.xml	(revision da38db3187809b42c47604d9d078238d2d02705a)
++++ b/.idea/vcs.xml	(date 1744177016069)
+@@ -1,11 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="CommitMessageInspectionProfile">
+-    <profile version="1.0">
+-      <inspection_tool class="CommitFormat" enabled="true" level="WARNING" enabled_by_default="true" />
+-      <inspection_tool class="CommitNamingConvention" enabled="true" level="WARNING" enabled_by_default="true" />
+-    </profile>
+-  </component>
+   <component name="VcsDirectoryMappings">
+     <mapping directory="" vcs="Git" />
+   </component>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"f109ddcd-c921-4a27-aea6-657a0d3b75de\" name=\"Changes\" comment=\"feat(roots): Now with Roots&#10;&#10;Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/vcs.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/README.md\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/README.md\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/build/index.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/index.js\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/build/resources.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/resources.js\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/build/sfCommands.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/build/sfCommands.js\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/package.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/package.json\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/run.sh\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/run.sh\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/index.ts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/index.ts\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/resources.ts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/resources.ts\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/sfCommands.ts\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/sfCommands.ts\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\">{\n  &quot;lastFilter&quot;: {\n    &quot;state&quot;: &quot;OPEN&quot;,\n    &quot;assignee&quot;: &quot;codefriar&quot;\n  }\n}</component>\n  <component name=\"GitToolBoxStore\">\n    <option name=\"recentBranches\">\n      <RecentBranches>\n        <option name=\"branchesForRepo\">\n          <list>\n            <RecentBranchesForRepo>\n              <option name=\"branches\">\n                <list>\n                  <RecentBranch>\n                    <option name=\"branchName\" value=\"main\" />\n                    <option name=\"lastUsedInstant\" value=\"1744051088\" />\n                  </RecentBranch>\n                  <RecentBranch>\n                    <option name=\"branchName\" value=\"feat/contextualExecution\" />\n                    <option name=\"lastUsedInstant\" value=\"1744051087\" />\n                  </RecentBranch>\n                </list>\n              </option>\n              <option name=\"repositoryRootUrl\" value=\"file://$PROJECT_DIR$\" />\n            </RecentBranchesForRepo>\n          </list>\n        </option>\n      </RecentBranches>\n    </option>\n  </component>\n  <component name=\"GithubPullRequestsUISettings\">{\n  &quot;selectedUrlAndAccountId&quot;: {\n    &quot;url&quot;: &quot;git@github.com:codefriar/sf-mcp.git&quot;,\n    &quot;accountId&quot;: &quot;cd1051c7-86d1-42aa-9984-58b0635d53d5&quot;\n  },\n  &quot;recentNewPullRequestHead&quot;: {\n    &quot;server&quot;: {\n      &quot;useHttp&quot;: false,\n      &quot;host&quot;: &quot;github.com&quot;,\n      &quot;port&quot;: null,\n      &quot;suffix&quot;: null\n    },\n    &quot;owner&quot;: &quot;codefriar&quot;,\n    &quot;repository&quot;: &quot;sf-mcp&quot;\n  }\n}</component>\n  <component name=\"ProblemsViewState\">\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;associatedIndex&quot;: 4\n}</component>\n  <component name=\"ProjectId\" id=\"2urn5n86K5zpk5YZjhjYXG5kRcZ\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"ASKED_SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.git.unshallow\": \"true\",\n    \"git-widget-placeholder\": \"main\",\n    \"js.linters.configure.manually.selectedeslint\": \"true\",\n    \"node.js.detected.package.eslint\": \"true\",\n    \"node.js.detected.package.standard\": \"true\",\n    \"node.js.detected.package.tslint\": \"true\",\n    \"node.js.selected.package.eslint\": \"/Users/kpoorman/src/sfMcp/node_modules/@eslint/eslintrc\",\n    \"node.js.selected.package.standard\": \"\",\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\n    \"nodejs_package_manager_path\": \"npm\",\n    \"settings.editor.selected.configurable\": \"settings.javascript.linters.eslint\",\n    \"ts.external.directory.path\": \"/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external\",\n    \"vue.rearranger.settings.migration\": \"true\"\n  }\n}]]></component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27\" />\n        <option value=\"bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"f109ddcd-c921-4a27-aea6-657a0d3b75de\" name=\"Changes\" comment=\"\" />\n      <created>1743015380248</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1743015380248</updated>\n      <workItem from=\"1743015381427\" duration=\"2834000\" />\n      <workItem from=\"1743030208472\" duration=\"5343000\" />\n      <workItem from=\"1743138461831\" duration=\"925000\" />\n      <workItem from=\"1743139755619\" duration=\"9045000\" />\n      <workItem from=\"1743222211272\" duration=\"953000\" />\n      <workItem from=\"1743606226833\" duration=\"2474000\" />\n      <workItem from=\"1743709358220\" duration=\"3768000\" />\n      <workItem from=\"1744050930504\" duration=\"8507000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1743142354973</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1743142354973</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"chore(lint): prettier and eslint&#10;&#10;rules applied\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1743143924176</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1743143924176</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"chore(packaging): added standard-release\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1743144159287</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1743144159287</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"chore(build): build version\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1743144468869</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1743144468869</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1743613695726</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1743613695726</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"feat(context directories): All commands require a directory&#10;&#10;to execute from, so that the child_process can CWD there, and the sf cli understand it's project context\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1743826235821</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1743826235821</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"7\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`\" />\n    <MESSAGE value=\"chore(lint): prettier and eslint&#10;&#10;rules applied\" />\n    <MESSAGE value=\"chore(packaging): added standard-release\" />\n    <MESSAGE value=\"chore(build): build version\" />\n    <MESSAGE value=\"chore(cleanup): cleanup of code in prep&#10;&#10;for release, and the use of npx\" />\n    <MESSAGE value=\"feat(context directories): All commands require a directory&#10;&#10;to execute from, so that the child_process can CWD there, and the sf cli understand it's project context\" />\n    <MESSAGE value=\"feat(roots): Now with Roots&#10;&#10;Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"feat(roots): Now with Roots&#10;&#10;Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme\" />\n  </component>\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\n    <expand />\n    <select />\n  </component>\n  <component name=\"com.github.lppedd.cc.CommitBuilderDialog\">\n    <type>feat</type>\n    <scope>roots</scope>\n    <subject>Now with Roots</subject>\n    <body>Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme</body>\n    <footers>\n      <entry type=\"\" value=\"\" />\n    </footers>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision da38db3187809b42c47604d9d078238d2d02705a)
++++ b/.idea/workspace.xml	(date 1744177602290)
+@@ -7,15 +7,6 @@
+     <list default="true" id="f109ddcd-c921-4a27-aea6-657a0d3b75de" name="Changes" comment="feat(roots): Now with Roots&#10;&#10;Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme">
+       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/index.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/resources.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/build/sfCommands.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/sfCommands.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/resources.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources.ts" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/sfCommands.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sfCommands.ts" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -90,6 +81,7 @@
+     "RunOnceActivity.git.unshallow": "true",
+     "git-widget-placeholder": "main",
+     "js.linters.configure.manually.selectedeslint": "true",
++    "last_opened_file_path": "/Users/kpoorman/src/sf-mcp",
+     "node.js.detected.package.eslint": "true",
+     "node.js.detected.package.standard": "true",
+     "node.js.detected.package.tslint": "true",
+@@ -97,7 +89,7 @@
+     "node.js.selected.package.standard": "",
+     "node.js.selected.package.tslint": "(autodetect)",
+     "nodejs_package_manager_path": "npm",
+-    "settings.editor.selected.configurable": "settings.javascript.linters.eslint",
++    "settings.editor.selected.configurable": "IlluminatedCloudApplicationConfigurable",
+     "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+     "vue.rearranger.settings.migration": "true"
+   }
+@@ -126,6 +118,11 @@
+       <workItem from="1743606226833" duration="2474000" />
+       <workItem from="1743709358220" duration="3768000" />
+       <workItem from="1744050930504" duration="8507000" />
++      <workItem from="1744175346124" duration="54000" />
++      <workItem from="1744176958145" duration="58000" />
++      <workItem from="1744177019623" duration="385000" />
++      <workItem from="1744177410504" duration="83000" />
++      <workItem from="1744177497041" duration="105000" />
+     </task>
+     <task id="LOCAL-00001" summary="feat(tools): autodiscovery of tools&#10;&#10;based on `sf commands --json`">
+       <option name="closed" value="true" />
+@@ -195,13 +192,4 @@
+     <expand />
+     <select />
+   </component>
+-  <component name="com.github.lppedd.cc.CommitBuilderDialog">
+-    <type>feat</type>
+-    <scope>roots</scope>
+-    <subject>Now with Roots</subject>
+-    <body>Now using &quot;roots&quot; - configurable inputs to the MCP that set the project directories, including instructions in the readme</body>
+-    <footers>
+-      <entry type="" value="" />
+-    </footers>
+-  </component>
+ </project>
+\ No newline at end of file
