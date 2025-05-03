@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/codefriar-sf-mcp-badge.png)](https://mseep.ai/app/codefriar-sf-mcp)
+
 # Salesforce CLI MCP Server
 
 Model Context Protocol (MCP) server for providing Salesforce CLI functionality to LLM tools like Claude Desktop.
