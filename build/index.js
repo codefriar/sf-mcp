@@ -13,7 +13,7 @@ const server = new McpServer({
 });
 // Only register utility tools that aren't SF CLI commands
 // These are utility functions that extend or manage the MCP server itself
-server.tool('sf_cache_clear', {}, async () => {
+server.tool('sf_cache_clear', 'Clear the cached SF command metadata to force a refresh', {}, async () => {
     const result = clearCommandCache();
     return {
         content: [
@@ -26,7 +26,7 @@ server.tool('sf_cache_clear', {}, async () => {
         ]
     };
 });
-server.tool('sf_cache_refresh', {}, async () => {
+server.tool('sf_cache_refresh', 'Refresh the SF command cache by re-scanning all available commands', {}, async () => {
     const result = refreshCommandCache();
     return {
         content: [
@@ -41,7 +41,7 @@ server.tool('sf_cache_refresh', {}, async () => {
 });
 // Tools for managing Salesforce project directories (roots)
 // Tool for automatically detecting project directories from messages
-server.tool('sf_detect_project_directory', {}, async () => {
+server.tool('sf_detect_project_directory', 'Get instructions for setting up Salesforce project directories for command execution', {}, async () => {
     // Since we can't access the message in this version of MCP,
     // we need to rely on the LLM to extract the directory and use sf_set_project_directory
     return {
@@ -54,7 +54,7 @@ server.tool('sf_detect_project_directory', {}, async () => {
     };
 });
 // Tool for explicitly setting a project directory (root)
-server.tool('sf_set_project_directory', {
+server.tool('sf_set_project_directory', 'Set a Salesforce project directory for command execution context', {
     directory: z.string().describe('The absolute path to a directory containing an sfdx-project.json file'),
     name: z.string().optional().describe('Optional name for this project root'),
     description: z.string().optional().describe('Optional description for this project root'),
@@ -78,7 +78,7 @@ server.tool('sf_set_project_directory', {
     };
 });
 // Tool for listing configured project roots
-server.tool('sf_list_roots', {}, async () => {
+server.tool('sf_list_roots', 'List all configured Salesforce project directories and their metadata', {}, async () => {
     const roots = getProjectRoots();
     if (roots.length === 0) {
         return {
