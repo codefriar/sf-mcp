@@ -564,8 +564,8 @@ export async function registerSfCommands(server) {
                     continue;
                 }
                 const zodSchema = commandToZodSchema(command);
-                // Register the command as a tool
-                server.tool(toolName, zodSchema, async (flags) => {
+                // Register the command as a tool with description
+                server.tool(toolName, command.description, zodSchema, async (flags) => {
                     const flagsStr = formatFlags(flags);
                     const commandStr = `${command.fullCommand} ${flagsStr}`;
                     console.error(`Executing: sf ${commandStr}`);
@@ -619,9 +619,9 @@ export async function registerSfCommands(server) {
                     if (registeredTools.has(simplifiedToolName) || registeredAliases.has(simplifiedToolName)) {
                         continue;
                     }
-                    // Register simplified alias
+                    // Register simplified alias with description
                     try {
-                        server.tool(simplifiedToolName, zodSchema, async (flags) => {
+                        server.tool(simplifiedToolName, `Alias for ${command.description}`, zodSchema, async (flags) => {
                             const flagsStr = formatFlags(flags);
                             const commandStr = `${command.fullCommand} ${flagsStr}`;
                             console.error(`Executing (via alias ${simplifiedToolName}): sf ${commandStr}`);

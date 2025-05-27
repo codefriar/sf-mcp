@@ -518,6 +518,7 @@ function getAllSfCommands(): SfCommand[] {
 function commandToZodSchema(command: SfCommand): Record<string, z.ZodTypeAny> {
     const schemaObj: Record<string, z.ZodTypeAny> = {};
 
+
     for (const flag of command.flags) {
         let flagSchema: z.ZodTypeAny;
 
@@ -711,8 +712,8 @@ export async function registerSfCommands(server: McpServer): Promise<number> {
 
                 const zodSchema = commandToZodSchema(command);
 
-                // Register the command as a tool
-                server.tool(toolName, zodSchema, async (flags) => {
+                // Register the command as a tool with description
+                server.tool(toolName, command.description, zodSchema, async (flags) => {
                     const flagsStr = formatFlags(flags);
                     const commandStr = `${command.fullCommand} ${flagsStr}`;
 
@@ -771,9 +772,9 @@ export async function registerSfCommands(server: McpServer): Promise<number> {
                         continue;
                     }
 
-                    // Register simplified alias
+                    // Register simplified alias with description
                     try {
-                        server.tool(simplifiedToolName, zodSchema, async (flags) => {
+                        server.tool(simplifiedToolName, `Alias for ${command.description}`, zodSchema, async (flags) => {
                             const flagsStr = formatFlags(flags);
                             const commandStr = `${command.fullCommand} ${flagsStr}`;
 
