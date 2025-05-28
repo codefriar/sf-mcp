@@ -1,5 +1,7 @@
 # Salesforce CLI MCP Server
 
+[![smithery badge](https://smithery.ai/badge/@codefriar/sf-mcp)](https://smithery.ai/server/@codefriar/sf-mcp)
+
 Model Context Protocol (MCP) server for providing Salesforce CLI functionality to LLM tools like Claude Desktop.
 
 ## Overview
@@ -18,6 +20,15 @@ This MCP server wraps the Salesforce CLI (`sf`) command-line tool and exposes it
 
 ## Installation
 
+### Installing via Smithery
+
+To install Salesforce CLI MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@codefriar/sf-mcp):
+
+```bash
+npx -y @smithery/cli install @codefriar/sf-mcp --client claude
+```
+
+### Manual Installation
 ```bash
 # Clone the repository
 git clone <repository-url>

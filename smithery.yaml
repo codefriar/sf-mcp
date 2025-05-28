@@ -1,0 +1,22 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    properties:
+      projectRoots:
+        type: array
+        items:
+          type: string
+        default: []
+        description: Optional list of Salesforce project directories to use as roots.
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => { const args = ['build/index.js']; if (config.projectRoots && Array.isArray(config.projectRoots) && config.projectRoots.length > 0) { args.push(...config.projectRoots); } return { command: 'node', args }; }
+  exampleConfig:
+    projectRoots:
+      - /path/to/project1
+      - /path/to/project2
